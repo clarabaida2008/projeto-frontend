@@ -15,6 +15,7 @@ function Pagina(){
             categoria:"Escolar"
         }
     ])
+    function TrataCadastro(){}
     return(
         <>
             <header>
@@ -56,7 +57,7 @@ function Pagina(){
                     <input type="text" name="nome" id="nome" />
                     <input type="text" name="preco" id="preco"/>
                     <input type="text" name="categoria" id="categoria"/>
-                    <input type="submit" value="Cadastrar"/>
+                    <input type="submit" value="Cadastrar" onClick={TrataCadastro}/>
                 </div>
             </main>
             <footer></footer>
