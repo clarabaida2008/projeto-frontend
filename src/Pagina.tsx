@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import './Pagina.css'
 interface ProdutosState {
     id: number,
@@ -8,6 +8,9 @@ interface ProdutosState {
 }
 
 function Pagina() {
+    useEffect(()=>{
+        
+    },[])
     const [id,setId] = useState("")
     const [nome,setNome] = useState("")
     const [preco,setPreco] = useState("")
@@ -85,7 +88,7 @@ function Pagina() {
                     <form onSubmit={TrataCadastro}>
                         <input type="text" name="id" id="id" onChange={trataId} placeholder="Id"/>
                         <input type="text" name="nome" id="nome" onChange={trataNome} placeholder="Nome"/>
-                        <input type="text" name="preco" id="preco" onChange={trataPreco} placeholder="Preço" />
+                        <input type="number" name="preco" id="preco" onChange={trataPreco} placeholder="Preço" />
                         <input type="text" name="categoria" id="categoria" onChange={trataCategoria} placeholder="Categoria"/>
                         <input type="submit" value="Cadastrar"/>
                     </form>
