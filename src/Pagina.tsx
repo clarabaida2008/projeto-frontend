@@ -1,4 +1,5 @@
 import { useState } from "react"
+import './Pagina.css'
 interface ProdutosState {
     id: number,
     nome: string,
@@ -82,10 +83,10 @@ function Pagina() {
                 </div>
                 <div className="container-cadastro">
                     <form onSubmit={TrataCadastro}>
-                        <input type="text" name="id" id="id" onChange={trataId}/>
-                        <input type="text" name="nome" id="nome" onChange={trataNome} />
-                        <input type="text" name="preco" id="preco" onChange={trataPreco} />
-                        <input type="text" name="categoria" id="categoria" onChange={trataCategoria} />
+                        <input type="text" name="id" id="id" onChange={trataId} placeholder="Id"/>
+                        <input type="text" name="nome" id="nome" onChange={trataNome} placeholder="Nome"/>
+                        <input type="text" name="preco" id="preco" onChange={trataPreco} placeholder="Preço" />
+                        <input type="text" name="categoria" id="categoria" onChange={trataCategoria} placeholder="Categoria"/>
                         <input type="submit" value="Cadastrar"/>
                     </form>
 
