@@ -26,6 +26,7 @@ main{
     margin-top: 15px;
     padding: 0px 10vw;
     display: flex;
+    position: relative;
 }
 main>div{
     flex:1
@@ -70,4 +71,14 @@ form>input[type="submit"]{
     color:white;
     border: 1px solid #f0f0f0;
     font-weight: bold;
+}
+
+.mensagem{
+    position: absolute;
+    right: 15px;
+    background-color: #F8D7DA;
+    color: #58151C;
+    padding: 8px 20px;
+    border: 1px solid rgb(241, 174, 181);
+    border-radius: 4px;
 }
