@@ -8,13 +8,11 @@ interface ProdutosState {
 }
 
 function Pagina() {
-    useEffect(()=>{
-        
-    },[])
     const [id,setId] = useState("")
     const [nome,setNome] = useState("")
     const [preco,setPreco] = useState("")
     const [categoria,setCategoria] = useState("")
+    const [mensagem,setMensagem] = useState("")
     const [produtos, setProdutos] = useState<ProdutosState[]>([
         {
             id: 1,
@@ -23,6 +21,20 @@ function Pagina() {
             categoria: "Escolar"
         }
     ])
+    useEffect(()=>{
+        const buscaDados = async()=>{
+            const resultado = await fetch("http://localhost:8000/produtos")
+            if(resultado.status===200){
+                const dados = await resultado.json()
+                setProdutos(dados)
+            }
+            if(resultado.status===400){
+                const erro = await resultado.json()
+                //console.log(erro.mensagem)
+            }
+        }
+        buscaDados()
+    },[])// [] => significa as dependências do useEffects
     function TrataCadastro(event:React.FormEvent<HTMLFormElement>){
         event.preventDefault();
         //Criar um novo produto
