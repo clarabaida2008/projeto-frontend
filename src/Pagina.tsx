@@ -13,14 +13,7 @@ function Pagina() {
     const [preco, setPreco] = useState("")
     const [categoria, setCategoria] = useState("")
     const [mensagem, setMensagem] = useState("")
-    const [produtos, setProdutos] = useState<ProdutosState[]>([
-        {
-            id: 1,
-            nome: "Caderno",
-            preco: 20,
-            categoria: "Escolar"
-        }
-    ])
+    const [produtos, setProdutos] = useState<ProdutosState[]>([])
     useEffect(() => {
         const buscaDados = async () => {
             try {
