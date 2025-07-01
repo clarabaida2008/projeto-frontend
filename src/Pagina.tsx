@@ -34,7 +34,7 @@ function Pagina() {
         }
         buscaDados()
     }, [])// [] => significa as dependências do useEffects
-    function TrataCadastro(event: React.FormEvent<HTMLFormElement>) {
+    async function TrataCadastro(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         //Criar um novo produto
         const novoProduto: ProdutosState = {
@@ -43,8 +43,29 @@ function Pagina() {
             preco: parseFloat(preco),
             categoria: categoria
         }
-        //Adicionar esse novo produto no vetor/Array de produtos
-        setProdutos([...produtos, novoProduto])
+        try {
+            const resposta = await fetch("http://localhost:8000/produtos", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(novoProduto)
+            })
+           
+            if (resposta.status === 200) {
+                const dados = await resposta.json()
+                setProdutos([...produtos, dados])
+            }
+            if (resposta.status === 400) {
+                const erro = await resposta.json()
+                setMensagem(erro.mensagem)
+                //console.log(erro.mensagem)
+            }
+            
+        }
+        catch (erro) {
+            setMensagem("Fetch não functiona")
+        }
 
     }
     function trataId(event: React.ChangeEvent<HTMLInputElement>) {
