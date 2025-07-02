@@ -7,7 +7,7 @@ interface FornecedorState {
     cidadefornecedor: string
 }
 
-function Fornecedor() {
+function Fornecedor() {-+*
     const [idfornecedor, setIdFornecedor] = useState("")
     const [nomefornecedor, setNomeFornecedor] = useState("")
     const [cnpjfornecedor, setCnpjFornecedor] = useState("")
