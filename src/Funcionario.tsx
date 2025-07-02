@@ -8,12 +8,12 @@ interface FuncionarioState {
 }
 
 function Fornecedor() {
-    const [idfuncionario, setIdFornecedor] = useState("")
-    const [nomefuncionario, setNomeFornecedor] = useState("")
-    const [cnpjfuncionario, setCnpjFornecedor] = useState("")
-    const [cidadefuncionario, setCidadeFornecedor] = useState("")
+    const [idFuncionario, setIdFornecedor] = useState("")
+    const [nomeFuncionario, setNomeFornecedor] = useState("")
+    const [cnpjFuncionario, setCnpjFornecedor] = useState("")
+    const [cidadeFuncionario, setCidadeFuncionario] = useState("")
     const [mensagem, setMensagem] = useState("")
-    const [fornecedor, setFornecedor] = useState<ProdutosState[]>([])
+    const [Funcionario, setFuncionario] = useState<ProdutosState[]>([])
     useEffect(() => {
         const buscaDados = async () => {
             try {
