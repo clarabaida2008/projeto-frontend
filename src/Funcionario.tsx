@@ -1,26 +1,26 @@
 import { useEffect, useState } from "react"
 import './Funcionario.css'
 interface FuncionarioState {
-    idfornecedor: number,
-    nomefornecedor: string,
-    cnpjfornecedor: number,
-    cidadefornecedor: string
+    idfuncionario: number,
+    nomefuncionario: string,
+    funcaofuncionario: string,
+    cpffuncionario: number
 }
 
-function Fornecedor() {
-    const [idFuncionario, setIdFornecedor] = useState("")
-    const [nomeFuncionario, setNomeFornecedor] = useState("")
-    const [cnpjFuncionario, setCnpjFornecedor] = useState("")
-    const [cidadeFuncionario, setCidadeFuncionario] = useState("")
+function Funcionario() {
+    const [idfuncionario, setIdFuncionario] = useState("")
+    const [nomefuncionario, setNomeFuncionario] = useState("")
+    const [funcaofuncionario, setCnpjFuncionario] = useState("")
+    const [cpffuncionario, setCpfFuncionario] = useState("")
     const [mensagem, setMensagem] = useState("")
-    const [Funcionario, setFuncionario] = useState<ProdutosState[]>([])
+    const [Funcionario, setFuncionario] = useState<FuncionarioState[]>([])
     useEffect(() => {
         const buscaDados = async () => {
             try {
-                const resultado = await fetch("http://localhost:8000/produtos")
+                const resultado = await fetch("http://localhost:8000/funcionario")
                 if (resultado.status === 200) {
                     const dados = await resultado.json()
-                    setProdutos(dados)
+                    setFuncionario(dados)
                 }
                 if (resultado.status === 400) {
                     const erro = await resultado.json()
@@ -37,24 +37,24 @@ function Fornecedor() {
     async function TrataCadastro(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         //Criar um novo produto
-        const novoProduto: ProdutosState = {
-            id: parseInt(id),
-            nome: nome,
-            preco: parseFloat(preco),
-            categoria: categoria
+        const novoProduto: FuncionarioState = {
+            idFuncionario: parseInt(idfuncionario),
+            nomeFuncionario: nomefuncionario,
+           funcaofuncionario: funcaofuncionario,
+           cpffuncionario: parseInt(cpffuncionario)
         }
         try {
-            const resposta = await fetch("http://localhost:8000/produtos", {
+            const resposta = await fetch("http://localhost:8000/funcionario", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(novoProduto)
+                body: JSON.stringify(novofuncionario)
             })
            
             if (resposta.status === 200) {
                 const dados = await resposta.json()
-                setProdutos([...produtos, dados])
+                setFuncionario([...Funcionario, dados])
             }
             if (resposta.status === 400) {
                 const erro = await resposta.json()
@@ -74,7 +74,7 @@ function Fornecedor() {
     function trataNome(event: React.ChangeEvent<HTMLInputElement>) {
         setNome(event.target.value)
     }
-    function trataPreco(event: React.ChangeEvent<HTMLInputElement>) {
+    function trata(event: React.ChangeEvent<HTMLInputElement>) {
         setPreco(event.target.value)
     }
     function trataCategoria(event: React.ChangeEvent<HTMLInputElement>) {

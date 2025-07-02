@@ -13,19 +13,18 @@ function Fornecedor() {
     const [cnpjfornecedor, setCnpjFornecedor] = useState("")
     const [cidadefornecedor, setCidadeFornecedor] = useState("")
     const [mensagem, setMensagem] = useState("")
-    const [fornecedor, setFornecedor] = useState<ProdutosState[]>([])
+    const [fornecedor, setFornecedor] = useState<FornecedorState[]>([])
     useEffect(() => {
         const buscaDados = async () => {
             try {
-                const resultado = await fetch("http://localhost:8000/produtos")
+                const resultado = await fetch("http://localhost:8000/fornecedor")
                 if (resultado.status === 200) {
                     const dados = await resultado.json()
-                    setProdutos(dados)
+                    setFornecedor(dados)
                 }
                 if (resultado.status === 400) {
                     const erro = await resultado.json()
                     setMensagem(erro.mensagem)
-                    //console.log(erro.mensagem)
                 }
             }
             catch (erro) {
@@ -36,25 +35,25 @@ function Fornecedor() {
     }, [])// [] => significa as dependências do useEffects
     async function TrataCadastro(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        //Criar um novo produto
-        const novoProduto: ProdutosState = {
-            id: parseInt(id),
-            nome: nome,
-            preco: parseFloat(preco),
-            categoria: categoria
+        //Criar um novo fornecedor
+        const novoFornecedor: FornecedorState = {
+            idfornecedor: parseInt(idfornecedor),
+            nomefornecedor: nomefornecedor,
+            cnpjfornecedor: parseInt(cnpjfornecedor),
+            cidadefornecedor: cidadefornecedor
         }
         try {
-            const resposta = await fetch("http://localhost:8000/produtos", {
+            const resposta = await fetch("http://localhost:8000/fornecedor", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(novoProduto)
+                body: JSON.stringify(novoFornecedor)
             })
            
             if (resposta.status === 200) {
                 const dados = await resposta.json()
-                setProdutos([...produtos, dados])
+                setFornecedor([...fornecedor, dados])
             }
             if (resposta.status === 400) {
                 const erro = await resposta.json()
@@ -69,16 +68,16 @@ function Fornecedor() {
 
     }
     function trataId(event: React.ChangeEvent<HTMLInputElement>) {
-        setId(event.target.value)
+        setIdFornecedor(event.target.value)
     }
     function trataNome(event: React.ChangeEvent<HTMLInputElement>) {
-        setNome(event.target.value)
+        setNomeFornecedor(event.target.value)
     }
     function trataPreco(event: React.ChangeEvent<HTMLInputElement>) {
-        setPreco(event.target.value)
+        setCnpjFornecedor(event.target.value)
     }
     function trataCategoria(event: React.ChangeEvent<HTMLInputElement>) {
-        setCategoria(event.target.value)
+        setCidadeFornecedor(event.target.value)
     }
     return (
         <>
@@ -86,6 +85,9 @@ function Fornecedor() {
                 <div>Logo</div>
                 <nav>
                     <ul>
+                        <li>
+                            <a href="">Home</a>
+                        </li>
                         <li>
                             <a href="">Home</a>
                         </li>
@@ -106,17 +108,20 @@ function Fornecedor() {
                 }
 
                 <div className="container-listagem">
-                    {produtos.map(produto => {
+                    {fornecedor.map(fornecedor => {
                         return (
-                            <div className="produto-container">
-                                <div className="produto-nome">
-                                    {produto.nome}
+                            <div className="fornecedor-container">
+                                <div className="fornecedor-id">
+                                    {fornecedor.idfornecedor}
                                 </div>
-                                <div className="produto-preco">
-                                    {produto.preco}
+                                <div className="fornecedor-nome">
+                                    {fornecedor.nomefornecedor}
                                 </div>
-                                <div className="produto-categoria">
-                                    {produto.categoria}
+                                <div className="fornecedor-cnpj">
+                                    {fornecedor.cnpjfornecedor}
+                                </div>
+                                <div className="fornecedor-cidade">
+                                    {fornecedor.cidadefornecedor}
                                 </div>
                             </div>
                         )
@@ -124,13 +129,12 @@ function Fornecedor() {
                 </div>
                 <div className="container-cadastro">
                     <form onSubmit={TrataCadastro}>
-                        <input type="text" name="id" id="id" onChange={trataId} placeholder="Id" />
+                        <input type="number" name="id" id="id" onChange={trataId} placeholder="Id" />
                         <input type="text" name="nome" id="nome" onChange={trataNome} placeholder="Nome" />
-                        <input type="number" name="preco" id="preco" onChange={trataPreco} placeholder="Preço" />
-                        <input type="text" name="categoria" id="categoria" onChange={trataCategoria} placeholder="Categoria" />
+                        <input type="number" name="cnpj" id="cnpj" onChange={trataPreco} placeholder="CNPJ" />
+                        <input type="text" name="cidade" id="cidade" onChange={trataCategoria} placeholder="Cidade" />
                         <input type="submit" value="Cadastrar" />
                     </form>
-
                 </div>
             </main>
             <footer></footer>
@@ -138,4 +142,4 @@ function Fornecedor() {
     )
 }
 
-export default Pagina
+export default Fornecedor

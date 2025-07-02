@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react"
-import './Pagina.css'
-interface ProdutosState {
-    id: number,
-    nome: string,
-    preco: number,
-    categoria: string
+import './Produto.css'
+interface ProdutoState {
+    idproduto: number,
+    nomeproduto: string,
+    precoproduto: number,
+    categoriaproduto: string
 }
 
-function Pagina() {
-    const [id, setId] = useState("")
-    const [nome, setNome] = useState("")
-    const [preco, setPreco] = useState("")
-    const [categoria, setCategoria] = useState("")
+function produto() {
+    const [idproduto, setIdproduto] = useState("")
+    const [nomeproduto, setNomeproduto] = useState("")
+    const [precoproduto, setPrecoproduto] = useState("")
+    const [categoriaproduto, setCategoriaproduto] = useState("")
     const [mensagem, setMensagem] = useState("")
     const [produtos, setProdutos] = useState<ProdutosState[]>([])
     useEffect(() => {
