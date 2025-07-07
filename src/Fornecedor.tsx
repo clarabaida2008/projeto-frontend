@@ -7,7 +7,7 @@ interface FornecedorState {
     cidadefornecedor: string
 }
 
-function Fornecedor() {-+*
+function Fornecedor() {
     const [idfornecedor, setIdFornecedor] = useState("")
     const [nomefornecedor, setNomeFornecedor] = useState("")
     const [cnpjfornecedor, setCnpjFornecedor] = useState("")
@@ -67,22 +67,22 @@ function Fornecedor() {-+*
         }
 
     }
-    function trataId(event: React.ChangeEvent<HTMLInputElement>) {
+    function trataIdFornecedor(event: React.ChangeEvent<HTMLInputElement>) {
         setIdFornecedor(event.target.value)
     }
-    function trataNome(event: React.ChangeEvent<HTMLInputElement>) {
+    function trataNomeFornecedor(event: React.ChangeEvent<HTMLInputElement>) {
         setNomeFornecedor(event.target.value)
     }
-    function trataPreco(event: React.ChangeEvent<HTMLInputElement>) {
+    function trataCnpjFornecedor(event: React.ChangeEvent<HTMLInputElement>) {
         setCnpjFornecedor(event.target.value)
     }
-    function trataCategoria(event: React.ChangeEvent<HTMLInputElement>) {
+    function trataCidadeFornecedor(event: React.ChangeEvent<HTMLInputElement>) {
         setCidadeFornecedor(event.target.value)
     }
     return (
         <>
             <header>
-                <div>Logo</div>
+                <div>Mercadinho</div>
                 <nav>
                     <ul>
                         <li>
@@ -129,10 +129,10 @@ function Fornecedor() {-+*
                 </div>
                 <div className="container-cadastro">
                     <form onSubmit={TrataCadastro}>
-                        <input type="number" name="id" id="id" onChange={trataId} placeholder="Id" />
-                        <input type="text" name="nome" id="nome" onChange={trataNome} placeholder="Nome" />
-                        <input type="number" name="cnpj" id="cnpj" onChange={trataPreco} placeholder="CNPJ" />
-                        <input type="text" name="cidade" id="cidade" onChange={trataCategoria} placeholder="Cidade" />
+                        <input type="number" name="id" id="id" onChange={trataIdFornecedor} placeholder="Id" />
+                        <input type="text" name="nome" id="nome" onChange={trataNomeFornecedor} placeholder="Nome" />
+                        <input type="number" name="cnpj" id="cnpj" onChange={trataCnpjFornecedor} placeholder="CNPJ" />
+                        <input type="text" name="cidade" id="cidade" onChange={trataCidadeFornecedor} placeholder="Cidade" />
                         <input type="submit" value="Cadastrar" />
                     </form>
                 </div>

@@ -7,20 +7,20 @@ interface ProdutoState {
     categoriaproduto: string
 }
 
-function produto() {
-    const [idproduto, setIdproduto] = useState("")
-    const [nomeproduto, setNomeproduto] = useState("")
-    const [precoproduto, setPrecoproduto] = useState("")
-    const [categoriaproduto, setCategoriaproduto] = useState("")
+function Produto() {
+    const [idproduto, setIdProduto] = useState("")
+    const [nomeproduto, setNomeProduto] = useState("")
+    const [precoproduto, setPrecoProduto] = useState("")
+    const [categoriaproduto, setCategoriaProduto] = useState("")
     const [mensagem, setMensagem] = useState("")
-    const [produtos, setProdutos] = useState<ProdutosState[]>([])
+    const [produto, setProduto] = useState<ProdutoState[]>([])
     useEffect(() => {
         const buscaDados = async () => {
             try {
                 const resultado = await fetch("http://localhost:8000/produtos")
                 if (resultado.status === 200) {
                     const dados = await resultado.json()
-                    setProdutos(dados)
+                    setProduto(dados)
                 }
                 if (resultado.status === 400) {
                     const erro = await resultado.json()
@@ -37,11 +37,11 @@ function produto() {
     async function TrataCadastro(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         //Criar um novo produto
-        const novoProduto: ProdutosState = {
-            id: parseInt(id),
-            nome: nome,
-            preco: parseFloat(preco),
-            categoria: categoria
+        const novoProduto: ProdutoState = {
+            idproduto: parseInt(idproduto),
+            nomeproduto: nomeproduto,
+            precoproduto: parseFloat(precoproduto),
+            categoriaproduto: categoriaproduto
         }
         try {
             const resposta = await fetch("http://localhost:8000/produtos", {
@@ -54,7 +54,7 @@ function produto() {
            
             if (resposta.status === 200) {
                 const dados = await resposta.json()
-                setProdutos([...produtos, dados])
+                setProduto([...produto, dados])
             }
             if (resposta.status === 400) {
                 const erro = await resposta.json()
@@ -69,16 +69,16 @@ function produto() {
 
     }
     function trataId(event: React.ChangeEvent<HTMLInputElement>) {
-        setId(event.target.value)
+        setIdProduto(event.target.value)
     }
     function trataNome(event: React.ChangeEvent<HTMLInputElement>) {
-        setNome(event.target.value)
+        setNomeProduto(event.target.value)
     }
     function trataPreco(event: React.ChangeEvent<HTMLInputElement>) {
-        setPreco(event.target.value)
+        setPrecoProduto(event.target.value)
     }
     function trataCategoria(event: React.ChangeEvent<HTMLInputElement>) {
-        setCategoria(event.target.value)
+        setCategoriaProduto(event.target.value)
     }
     return (
         <>
@@ -86,6 +86,9 @@ function produto() {
                 <div>Logo</div>
                 <nav>
                     <ul>
+                        <li>
+                            <a href="">Home</a>
+                        </li>
                         <li>
                             <a href="">Home</a>
                         </li>
@@ -106,17 +109,20 @@ function produto() {
                 }
 
                 <div className="container-listagem">
-                    {produtos.map(produto => {
+                    {produto.map(produto => {
                         return (
                             <div className="produto-container">
+                                <div className="produto-id">
+                                    {produto.idproduto}
+                                </div>
                                 <div className="produto-nome">
-                                    {produto.nome}
+                                    {produto.nomeproduto}
                                 </div>
                                 <div className="produto-preco">
-                                    {produto.preco}
+                                    {produto.precoproduto}
                                 </div>
                                 <div className="produto-categoria">
-                                    {produto.categoria}
+                                    {produto.categoriaproduto}
                                 </div>
                             </div>
                         )
@@ -124,7 +130,7 @@ function produto() {
                 </div>
                 <div className="container-cadastro">
                     <form onSubmit={TrataCadastro}>
-                        <input type="text" name="id" id="id" onChange={trataId} placeholder="Id" />
+                        <input type="number" name="id" id="id" onChange={trataId} placeholder="Id" />
                         <input type="text" name="nome" id="nome" onChange={trataNome} placeholder="Nome" />
                         <input type="number" name="preco" id="preco" onChange={trataPreco} placeholder="Preço" />
                         <input type="text" name="categoria" id="categoria" onChange={trataCategoria} placeholder="Categoria" />
@@ -138,4 +144,4 @@ function produto() {
     )
 }
 
-export default Pagina
+export default Produto

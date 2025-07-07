@@ -1,26 +1,28 @@
 import { useEffect, useState } from "react"
-import './Vendas.css'
-interface VendasState {
-    id: number,
-    nome: string,
-    preco: number,
-    categoria: string
+import './Venda.css'
+interface VendaState {
+    idvenda: number,
+    datavenda: string,
+    valorvenda: number,
+    formapagamentovenda: string,
+    funcionario_idfuncionario: number
 }
 
-function Vendas() {
-    const [id, setId] = useState("")
-    const [nome, setNome] = useState("")
-    const [preco, setPreco] = useState("")
-    const [categoria, setCategoria] = useState("")
-    const [mensagem, setMensagem] = useState("")
-    const [produtos, setProdutos] = useState<VendasState[]>([])
+function Venda() {
+    const [idvenda, setIdVenda] = useState("")
+    const [datavenda, setDataVenda] = useState("")
+    const [valorvenda, setValorVenda] = useState("")
+    const [formapagamentovenda, setFormaPagamentoVenda] = useState("")
+    const [funcionario_idfuncionario, setFuncionarioIdFuncionario]= useState("")
+    const [venda, setVenda] = useState<VendaState[]>([])
+    const [mensagem, setMensagem] = useState("");
     useEffect(() => {
         const buscaDados = async () => {
             try {
-                const resultado = await fetch("http://localhost:8000/Vendas")
+                const resultado = await fetch("http://localhost:8000/venda")
                 if (resultado.status === 200) {
                     const dados = await resultado.json()
-                    setProdutos(dados)
+                    setVenda(dados)
                 }
                 if (resultado.status === 400) {
                     const erro = await resultado.json()
@@ -37,24 +39,25 @@ function Vendas() {
     async function TrataCadastro(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         //Criar um novo produto
-        const novoProduto: ProdutosState = {
-            id: parseInt(id),
-            nome: nome,
-            preco: parseFloat(preco),
-            categoria: categoria
+        const novaVenda: VendaState = {
+            idvenda: parseInt(idvenda),
+            datavenda: datavenda,
+            valorvenda: parseFloat(valorvenda),
+            formapagamentovenda: formapagamentovenda,
+            funcionario_idfuncionario: parseInt (funcionario_idfuncionario)
         }
         try {
-            const resposta = await fetch("http://localhost:8000/produtos", {
+            const resposta = await fetch("http://localhost:8000/venda", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(novoProduto)
+                body: JSON.stringify(novaVenda)
             })
            
             if (resposta.status === 200) {
                 const dados = await resposta.json()
-                setProdutos([...produtos, dados])
+                setVenda([...venda, dados])
             }
             if (resposta.status === 400) {
                 const erro = await resposta.json()
@@ -68,17 +71,20 @@ function Vendas() {
         }
 
     }
-    function trataId(event: React.ChangeEvent<HTMLInputElement>) {
-        setId(event.target.value)
+    function trataIdVenda(event: React.ChangeEvent<HTMLInputElement>) {
+        setIdVenda(event.target.value)
     }
-    function trataNome(event: React.ChangeEvent<HTMLInputElement>) {
-        setNome(event.target.value)
+    function trataDataVenda(event: React.ChangeEvent<HTMLInputElement>) {
+        setDataVenda(event.target.value)
     }
-    function trataPreco(event: React.ChangeEvent<HTMLInputElement>) {
-        setPreco(event.target.value)
+    function trataValorVenda(event: React.ChangeEvent<HTMLInputElement>) {
+        setValorVenda(event.target.value)
     }
-    function trataCategoria(event: React.ChangeEvent<HTMLInputElement>) {
-        setCategoria(event.target.value)
+    function trataFormaPagamentoVenda(event: React.ChangeEvent<HTMLInputElement>) {
+        setFormaPagamentoVenda(event.target.value)
+    }
+    function trataFuncionarioIdFuncionario(event: React.ChangeEvent<HTMLInputElement>) {
+        setFuncionarioIdFuncionario(event.target.value)
     }
     return (
         <>
@@ -106,17 +112,23 @@ function Vendas() {
                 }
 
                 <div className="container-listagem">
-                    {produtos.map(produto => {
+                    {venda.map(venda => {
                         return (
-                            <div className="produto-container">
-                                <div className="produto-nome">
-                                    {produto.nome}
+                            <div className="venda-container">
+                                <div className="venda-id">
+                                    {venda.idvenda}
                                 </div>
-                                <div className="produto-preco">
-                                    {produto.preco}
+                                <div className="venda-data">
+                                    {venda.datavenda}
                                 </div>
-                                <div className="produto-categoria">
-                                    {produto.categoria}
+                                <div className="venda-valor">
+                                    {venda.valorvenda}
+                                </div>
+                                <div className="venda-pagamento">
+                                    {venda.formapagamentovenda}
+                                </div>
+                                <div className="venda-funcionario">
+                                    {venda.funcionario_idfuncionario}
                                 </div>
                             </div>
                         )
@@ -124,10 +136,11 @@ function Vendas() {
                 </div>
                 <div className="container-cadastro">
                     <form onSubmit={TrataCadastro}>
-                        <input type="text" name="id" id="id" onChange={trataId} placeholder="Id" />
-                        <input type="text" name="nome" id="nome" onChange={trataNome} placeholder="Nome" />
-                        <input type="number" name="preco" id="preco" onChange={trataPreco} placeholder="Preço" />
-                        <input type="text" name="categoria" id="categoria" onChange={trataCategoria} placeholder="Categoria" />
+                        <input type="number" name="id" id="id" onChange={trataIdVenda} placeholder="Id" />
+                        <input type="number" name="data" id="data" onChange={trataDataVenda} placeholder="Data" />
+                        <input type="number" name="valor" id="valor" onChange={trataValorVenda} placeholder="Valor" />
+                        <input type="text" name="pagamento" id="pagamento" onChange={trataFormaPagamentoVenda} placeholder="Pagamento" />
+                        <input type="number" name="funcionario" id="funcionario" onChange={trataFuncionarioIdFuncionario} placeholder="Id Funcionário" />
                         <input type="submit" value="Cadastrar" />
                     </form>
 
@@ -138,4 +151,4 @@ function Vendas() {
     )
 }
 
-export default Pagina
+export default Venda

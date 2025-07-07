@@ -10,10 +10,11 @@ interface FuncionarioState {
 function Funcionario() {
     const [idfuncionario, setIdFuncionario] = useState("")
     const [nomefuncionario, setNomeFuncionario] = useState("")
-    const [funcaofuncionario, setCnpjFuncionario] = useState("")
+    const [funcaofuncionario, setFuncaoFuncionario] = useState("")
     const [cpffuncionario, setCpfFuncionario] = useState("")
     const [mensagem, setMensagem] = useState("")
-    const [Funcionario, setFuncionario] = useState<FuncionarioState[]>([])
+    const [funcionario, setFuncionario] = useState<FuncionarioState[]>([])
+
     useEffect(() => {
         const buscaDados = async () => {
             try {
@@ -21,27 +22,23 @@ function Funcionario() {
                 if (resultado.status === 200) {
                     const dados = await resultado.json()
                     setFuncionario(dados)
-                }
-                if (resultado.status === 400) {
+                } else if (resultado.status === 400) {
                     const erro = await resultado.json()
                     setMensagem(erro.mensagem)
-                    //console.log(erro.mensagem)
                 }
-            }
-            catch (erro) {
-                setMensagem("Fetch não functiona")
+            } catch (erro) {
+                setMensagem("Fetch não funciona");
             }
         }
         buscaDados()
-    }, [])// [] => significa as dependências do useEffects
-    async function TrataCadastro(event: React.FormEvent<HTMLFormElement>) {
+    }, []);
+        async function TrataCadastro(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        //Criar um novo produto
-        const novoProduto: FuncionarioState = {
-            idFuncionario: parseInt(idfuncionario),
-            nomeFuncionario: nomefuncionario,
-           funcaofuncionario: funcaofuncionario,
-           cpffuncionario: parseInt(cpffuncionario)
+        const novoFuncionario: FuncionarioState = {
+            idfuncionario: parseInt(idfuncionario),
+            nomefuncionario: nomefuncionario,
+            funcaofuncionario: funcaofuncionario,
+            cpffuncionario: parseInt(cpffuncionario)
         }
         try {
             const resposta = await fetch("http://localhost:8000/funcionario", {
@@ -49,37 +46,34 @@ function Funcionario() {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(novofuncionario)
-            })
-           
+                body: JSON.stringify(novoFuncionario)
+            });
             if (resposta.status === 200) {
                 const dados = await resposta.json()
-                setFuncionario([...Funcionario, dados])
-            }
-            if (resposta.status === 400) {
+                setFuncionario([...funcionario, dados])
+                setMensagem("Funcionário cadastrado com sucesso!")
+            } else if (resposta.status === 400) {
                 const erro = await resposta.json()
                 setMensagem(erro.mensagem)
-                //console.log(erro.mensagem)
             }
-            
+        } catch (erro) {
+            setMensagem("Fetch não funciona")
         }
-        catch (erro) {
-            setMensagem("Fetch não functiona")
-        }
-
     }
+
     function trataId(event: React.ChangeEvent<HTMLInputElement>) {
-        setId(event.target.value)
+        setIdFuncionario(event.target.value)
     }
     function trataNome(event: React.ChangeEvent<HTMLInputElement>) {
-        setNome(event.target.value)
+        setNomeFuncionario(event.target.value)
     }
-    function trata(event: React.ChangeEvent<HTMLInputElement>) {
-        setPreco(event.target.value)
+    function trataFuncao(event: React.ChangeEvent<HTMLInputElement>) {
+        setFuncaoFuncionario(event.target.value)
     }
-    function trataCategoria(event: React.ChangeEvent<HTMLInputElement>) {
-        setCategoria(event.target.value)
+    function trataCpf(event: React.ChangeEvent<HTMLInputElement>) {
+        setCpfFuncionario(event.target.value)
     }
+
     return (
         <>
             <header>
@@ -95,6 +89,9 @@ function Funcionario() {
                         <li>
                             <a href="">Home</a>
                         </li>
+                         <li>
+                            <a href="">Home</a>
+                        </li>
                     </ul>
                 </nav>
             </header>
@@ -104,38 +101,40 @@ function Funcionario() {
                         <p>{mensagem}</p>
                     </div>
                 }
-
-                <div className="container-listagem">
-                    {produtos.map(produto => {
+              <div className="container-listagem">
+                    {funcionario.map(funcionario => {
                         return (
-                            <div className="produto-container">
-                                <div className="produto-nome">
-                                    {produto.nome}
+                            <div className="funcionario-container">
+                                <div className="funcionario-id">
+                                    {funcionario.idfuncionario}
                                 </div>
-                                <div className="produto-preco">
-                                    {produto.preco}
+                                <div className="funcionario-nome">
+                                    {funcionario.nomefuncionario}
                                 </div>
-                                <div className="produto-categoria">
-                                    {produto.categoria}
+                                <div className="funcionario-funcao">
+                                    {funcionario.funcaofuncionario}
+                                </div>
+                                <div className="funcionario-cpf">
+                                    {funcionario.cpffuncionario}
                                 </div>
                             </div>
                         )
                     })}
                 </div>
+
                 <div className="container-cadastro">
                     <form onSubmit={TrataCadastro}>
-                        <input type="text" name="id" id="id" onChange={trataId} placeholder="Id" />
-                        <input type="text" name="nome" id="nome" onChange={trataNome} placeholder="Nome" />
-                        <input type="number" name="preco" id="preco" onChange={trataPreco} placeholder="Preço" />
-                        <input type="text" name="categoria" id="categoria" onChange={trataCategoria} placeholder="Categoria" />
+                        <input type="number" name="id" id="id" onChange={trataId} placeholder="Id" value={idfuncionario} />
+                        <input type="text" name="nome" id="nome" onChange={trataNome} placeholder="Nome" value={nomefuncionario} />
+                        <input type="text" name="funcao" id="funcao" onChange={trataFuncao} placeholder="Função" value={funcaofuncionario} />
+                        <input type="number" name="cpf" id="cpf" onChange={trataCpf} placeholder="CPF" value={cpffuncionario} />
                         <input type="submit" value="Cadastrar" />
                     </form>
-
                 </div>
             </main>
             <footer></footer>
         </>
-    )
+    );
 }
 
-export default Pagina
+export default Funcionario
