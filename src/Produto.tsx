@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
-import './Produto.css'
 interface ProdutoState {
     idproduto: number,
     nomeproduto: string,
     precoproduto: number,
-    categoriaproduto: string
+    categoriaproduto: string,
+    fornecedor_idfornecedor: number
 }
 
 function Produto() {
@@ -12,12 +12,13 @@ function Produto() {
     const [nomeproduto, setNomeProduto] = useState("")
     const [precoproduto, setPrecoProduto] = useState("")
     const [categoriaproduto, setCategoriaProduto] = useState("")
-    const [mensagem, setMensagem] = useState("")
+    const [fornecedor_idfornecedor, setFornecedorIdFornecedor]= useState("")
     const [produto, setProduto] = useState<ProdutoState[]>([])
+    const [mensagem, setMensagem] = useState("")
     useEffect(() => {
         const buscaDados = async () => {
             try {
-                const resultado = await fetch("http://localhost:8000/produtos")
+                const resultado = await fetch("http://localhost:8000/produto")
                 if (resultado.status === 200) {
                     const dados = await resultado.json()
                     setProduto(dados)
@@ -41,10 +42,11 @@ function Produto() {
             idproduto: parseInt(idproduto),
             nomeproduto: nomeproduto,
             precoproduto: parseFloat(precoproduto),
-            categoriaproduto: categoriaproduto
+            categoriaproduto: categoriaproduto,
+            fornecedor_idfornecedor: parseInt (fornecedor_idfornecedor)
         }
         try {
-            const resposta = await fetch("http://localhost:8000/produtos", {
+            const resposta = await fetch("http://localhost:8000/produto", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -80,27 +82,11 @@ function Produto() {
     function trataCategoria(event: React.ChangeEvent<HTMLInputElement>) {
         setCategoriaProduto(event.target.value)
     }
+    function trataFornecedorIdFornecedor(event: React.ChangeEvent<HTMLInputElement>) {
+        setFornecedorIdFornecedor(event.target.value)
+    }
     return (
         <>
-            <header>
-                <div>Logo</div>
-                <nav>
-                    <ul>
-                        <li>
-                            <a href="">Home</a>
-                        </li>
-                        <li>
-                            <a href="">Home</a>
-                        </li>
-                        <li>
-                            <a href="">Home</a>
-                        </li>
-                        <li>
-                            <a href="">Home</a>
-                        </li>
-                    </ul>
-                </nav>
-            </header>
             <main>
                 {mensagem &&
                     <div className="mensagem">
@@ -124,6 +110,9 @@ function Produto() {
                                 <div className="produto-categoria">
                                     {produto.categoriaproduto}
                                 </div>
+                                <div className="produto-fornecedor">
+                                    {produto.fornecedor_idfornecedor}
+                                </div>
                             </div>
                         )
                     })}
@@ -134,6 +123,7 @@ function Produto() {
                         <input type="text" name="nome" id="nome" onChange={trataNome} placeholder="Nome" />
                         <input type="number" name="preco" id="preco" onChange={trataPreco} placeholder="Preço" />
                         <input type="text" name="categoria" id="categoria" onChange={trataCategoria} placeholder="Categoria" />
+                        <input type="number" name="fornecedor" id="fornecedor" onChange={trataFornecedorIdFornecedor} placeholder="Id Fornecedor" />
                         <input type="submit" value="Cadastrar" />
                     </form>
 

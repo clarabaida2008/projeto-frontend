@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import './Fornecedor.css'
 interface FornecedorState {
     idfornecedor: number,
     nomefornecedor: string,
@@ -20,6 +19,7 @@ function Fornecedor() {
                 const resultado = await fetch("http://localhost:8000/fornecedor")
                 if (resultado.status === 200) {
                     const dados = await resultado.json()
+                    console.log(dados)
                     setFornecedor(dados)
                 }
                 if (resultado.status === 400) {
@@ -81,25 +81,6 @@ function Fornecedor() {
     }
     return (
         <>
-            <header>
-                <div>Mercadinho</div>
-                <nav>
-                    <ul>
-                        <li>
-                            <a href="">Home</a>
-                        </li>
-                        <li>
-                            <a href="">Home</a>
-                        </li>
-                        <li>
-                            <a href="">Home</a>
-                        </li>
-                        <li>
-                            <a href="">Home</a>
-                        </li>
-                    </ul>
-                </nav>
-            </header>
             <main>
                 {mensagem &&
                     <div className="mensagem">

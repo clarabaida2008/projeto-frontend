@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import './Funcionario.css'
 interface FuncionarioState {
     idfuncionario: number,
     nomefuncionario: string,
@@ -76,25 +75,6 @@ function Funcionario() {
 
     return (
         <>
-            <header>
-                <div>Logo</div>
-                <nav>
-                    <ul>
-                        <li>
-                            <a href="">Home</a>
-                        </li>
-                        <li>
-                            <a href="">Home</a>
-                        </li>
-                        <li>
-                            <a href="">Home</a>
-                        </li>
-                         <li>
-                            <a href="">Home</a>
-                        </li>
-                    </ul>
-                </nav>
-            </header>
             <main>
                 {mensagem &&
                     <div className="mensagem">

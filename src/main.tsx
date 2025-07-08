@@ -3,11 +3,13 @@ import { createRoot } from 'react-dom/client'
 //import './index.css'
 //import App from './App.tsx'
 //import Container from './Container.tsx'
-
-import App from './App'
+import Pagina from './Fornecedor'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    {/* <Container nome='Header'/>
+    <Container nome='Body'/>
+    <Container nome='Footer'/> */}
+    <Pagina/>
   </StrictMode>,
 )

@@ -4,7 +4,7 @@ import Home from './Home';
 import Fornecedor from './Fornecedor';
 import Funcionario from './Funcionario';
 import Produto from './Produto';
-import Venda from './assets/Venda';
+import Venda from './Venda';
 
 export default function App() {
   return (
@@ -30,7 +30,6 @@ export default function App() {
           <Route path="/vendas" element={<Venda />} />
         </Routes>
       </main>
-      <footer style={{background:'#2c3e50',color:'white',textAlign:'center',padding:'20px',marginTop:'40px'}}>Rodapé</footer>
     </BrowserRouter>
   );
 }

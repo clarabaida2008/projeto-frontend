@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import './Venda.css'
 interface VendaState {
     idvenda: number,
     datavenda: string,
@@ -88,22 +87,6 @@ function Venda() {
     }
     return (
         <>
-            <header>
-                <div>Logo</div>
-                <nav>
-                    <ul>
-                        <li>
-                            <a href="">Home</a>
-                        </li>
-                        <li>
-                            <a href="">Home</a>
-                        </li>
-                        <li>
-                            <a href="">Home</a>
-                        </li>
-                    </ul>
-                </nav>
-            </header>
             <main>
                 {mensagem &&
                     <div className="mensagem">
