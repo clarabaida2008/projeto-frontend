@@ -4,7 +4,8 @@ interface VendaState {
     datavenda: string,
     valorvenda: number,
     formapagamentovenda: string,
-    funcionario_idfuncionario: number
+    funcionario_idfuncionario: number,
+    produto_idproduto: number
 }
 
 function Venda() {
@@ -13,6 +14,7 @@ function Venda() {
     const [valorvenda, setValorVenda] = useState("")
     const [formapagamentovenda, setFormaPagamentoVenda] = useState("")
     const [funcionario_idfuncionario, setFuncionarioIdFuncionario]= useState("")
+    const [produto_idproduto, setProdutoIdProduto]= useState("")
     const [venda, setVenda] = useState<VendaState[]>([])
     const [mensagem, setMensagem] = useState("");
     useEffect(() => {
@@ -43,7 +45,8 @@ function Venda() {
             datavenda: datavenda,
             valorvenda: parseFloat(valorvenda),
             formapagamentovenda: formapagamentovenda,
-            funcionario_idfuncionario: parseInt (funcionario_idfuncionario)
+            funcionario_idfuncionario: parseInt (funcionario_idfuncionario),
+            produto_idproduto: parseInt(produto_idproduto)
         }
         try {
             const resposta = await fetch("http://localhost:8000/venda", {
@@ -85,6 +88,9 @@ function Venda() {
     function trataFuncionarioIdFuncionario(event: React.ChangeEvent<HTMLInputElement>) {
         setFuncionarioIdFuncionario(event.target.value)
     }
+    function trataProdutoIdProduto(event: React.ChangeEvent<HTMLInputElement>) {
+        setProdutoIdProduto(event.target.value)
+    }
     return (
         <>
             <main>
@@ -113,6 +119,9 @@ function Venda() {
                                 <div className="venda-funcionario">
                                     {venda.funcionario_idfuncionario}
                                 </div>
+                                <div className="venda-produto">
+                                    {venda.produto_idproduto}
+                                </div>
                             </div>
                         )
                     })}
@@ -124,6 +133,7 @@ function Venda() {
                         <input type="number" name="valor" id="valor" onChange={trataValorVenda} placeholder="Valor" />
                         <input type="text" name="pagamento" id="pagamento" onChange={trataFormaPagamentoVenda} placeholder="Pagamento" />
                         <input type="number" name="funcionario" id="funcionario" onChange={trataFuncionarioIdFuncionario} placeholder="Id Funcionário" />
+                        <input type="number" name="produto" id="produto" onChange={trataProdutoIdProduto} placeholder="Id Produto" />
                         <input type="submit" value="Cadastrar" />
                     </form>
 

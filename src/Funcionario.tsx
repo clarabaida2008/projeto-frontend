@@ -3,14 +3,14 @@ interface FuncionarioState {
     idfuncionario: number,
     nomefuncionario: string,
     funcaofuncionario: string,
-    cpffuncionario: number
+    cpf: number
 }
 
 function Funcionario() {
     const [idfuncionario, setIdFuncionario] = useState("")
     const [nomefuncionario, setNomeFuncionario] = useState("")
     const [funcaofuncionario, setFuncaoFuncionario] = useState("")
-    const [cpffuncionario, setCpfFuncionario] = useState("")
+    const [cpf, setCpf] = useState("")
     const [mensagem, setMensagem] = useState("")
     const [funcionario, setFuncionario] = useState<FuncionarioState[]>([])
 
@@ -37,7 +37,7 @@ function Funcionario() {
             idfuncionario: parseInt(idfuncionario),
             nomefuncionario: nomefuncionario,
             funcaofuncionario: funcaofuncionario,
-            cpffuncionario: parseInt(cpffuncionario)
+            cpf: parseInt(cpf)
         }
         try {
             const resposta = await fetch("http://localhost:8000/funcionario", {
@@ -70,7 +70,7 @@ function Funcionario() {
         setFuncaoFuncionario(event.target.value)
     }
     function trataCpf(event: React.ChangeEvent<HTMLInputElement>) {
-        setCpfFuncionario(event.target.value)
+        setCpf(event.target.value)
     }
 
     return (
@@ -95,7 +95,7 @@ function Funcionario() {
                                     {funcionario.funcaofuncionario}
                                 </div>
                                 <div className="funcionario-cpf">
-                                    {funcionario.cpffuncionario}
+                                    {funcionario.cpf}
                                 </div>
                             </div>
                         )
@@ -107,7 +107,7 @@ function Funcionario() {
                         <input type="number" name="id" id="id" onChange={trataId} placeholder="Id" value={idfuncionario} />
                         <input type="text" name="nome" id="nome" onChange={trataNome} placeholder="Nome" value={nomefuncionario} />
                         <input type="text" name="funcao" id="funcao" onChange={trataFuncao} placeholder="Função" value={funcaofuncionario} />
-                        <input type="number" name="cpf" id="cpf" onChange={trataCpf} placeholder="CPF" value={cpffuncionario} />
+                        <input type="number" name="cpf" id="cpf" onChange={trataCpf} placeholder="CPF" value={cpf} />
                         <input type="submit" value="Cadastrar" />
                     </form>
                 </div>
