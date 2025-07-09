@@ -1,3 +1,4 @@
+import './Fornecedor.css';
 import { useEffect, useState } from "react"
 interface FornecedorState {
     idfornecedor: number,

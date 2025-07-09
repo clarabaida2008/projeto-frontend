@@ -1,0 +1,121 @@
+.venda-container {
+    background-color: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border-left: 4px solid #2e7d32;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.venda-container:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.venda-id {
+    grid-column: span 2;
+    font-size: 0.85rem;
+    color: #616161;
+    font-weight: 500;
+}
+
+.venda-data {
+    font-size: 1rem;
+    color: #333;
+}
+
+.venda-valor {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #1b5e20;
+    text-align: right;
+}
+
+.venda-pagamento {
+    background-color: #e8f5e9;
+    color: #1b5e20;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    display: inline-block;
+}
+
+.venda-funcionario {
+    font-size: 0.9rem;
+    color: #616161;
+    display: flex;
+    align-items: center;
+}
+
+.venda-funcionario::before {
+    content: "👤";
+    margin-right: 0.5rem;
+}
+
+.container-listagem {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.container-cadastro {
+    background-color: white;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.container-cadastro form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.container-cadastro input,
+.container-cadastro select {
+    padding: 0.8rem 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: #fafafa;
+}
+
+.container-cadastro input:focus,
+.container-cadastro select:focus {
+    outline: none;
+    border-color: #2e7d32;
+    background-color: white;
+    box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
+}
+
+.container-cadastro input[type="submit"] {
+    grid-column: 1 / -1;
+    background-color: #2e7d32;
+    color: white;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    padding: 1rem;
+}
+
+.container-cadastro input[type="submit"]:hover {
+    background-color: #1b5e20;
+}
+
+.mensagem {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: 500;
+    background-color: #e8f5e9;
+    color: #1b5e20;
+    border: 1px solid #c8e6c9;
+}

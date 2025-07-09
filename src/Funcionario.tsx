@@ -1,3 +1,4 @@
+import './Funcionario.css';
 import { useEffect, useState } from "react"
 interface FuncionarioState {
     idfuncionario: number,

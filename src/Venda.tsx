@@ -1,4 +1,14 @@
+import './Venda.css';
 import { useEffect, useState } from "react"
+
+interface FuncionarioState {
+    idfuncionario: number,
+    nomefuncionario: string
+}
+interface ProdutoState {
+    idproduto: number,
+    nomeproduto: string
+}
 interface VendaState {
     idvenda: number,
     datavenda: string,
@@ -13,9 +23,13 @@ function Venda() {
     const [datavenda, setDataVenda] = useState("")
     const [valorvenda, setValorVenda] = useState("")
     const [formapagamentovenda, setFormaPagamentoVenda] = useState("")
+    const [funcionarioNome, setFuncionarioNome] = useState("")
+    const [produtoNome, setProdutoNome] = useState("")
     const [funcionario_idfuncionario, setFuncionarioIdFuncionario]= useState("")
     const [produto_idproduto, setProdutoIdProduto]= useState("")
     const [venda, setVenda] = useState<VendaState[]>([])
+    const [funcionarios, setFuncionarios] = useState<FuncionarioState[]>([])
+    const [produtos, setProdutos] = useState<ProdutoState[]>([])
     const [mensagem, setMensagem] = useState("");
     useEffect(() => {
         const buscaDados = async () => {
@@ -28,25 +42,56 @@ function Venda() {
                 if (resultado.status === 400) {
                     const erro = await resultado.json()
                     setMensagem(erro.mensagem)
-                    //console.log(erro.mensagem)
                 }
-            }
-            catch (erro) {
+            } catch (erro) {
                 setMensagem("Fetch não functiona")
             }
         }
+        const buscaFuncionarios = async () => {
+            try {
+                const resultado = await fetch("http://localhost:8000/funcionario")
+                if (resultado.status === 200) {
+                    const dados = await resultado.json()
+                    setFuncionarios(dados)
+                }
+            } catch (erro) {}
+        }
+        const buscaProdutos = async () => {
+            try {
+                const resultado = await fetch("http://localhost:8000/produto")
+                if (resultado.status === 200) {
+                    const dados = await resultado.json()
+                    setProdutos(dados)
+                }
+            } catch (erro) {}
+        }
         buscaDados()
-    }, [])// [] => significa as dependências do useEffects
+        buscaFuncionarios()
+        buscaProdutos()
+    }, [])
     async function TrataCadastro(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        //Criar um novo produto
+        // Buscar funcionário e produto pelos nomes
+        const funcionarioEncontrado = funcionarios.find(f => f.nomefuncionario.toLowerCase() === funcionarioNome.toLowerCase())
+        if (!funcionarioEncontrado) {
+            setMensagem("Funcionário não encontrado!")
+            return
+        }
+        setFuncionarioIdFuncionario(funcionarioEncontrado.idfuncionario.toString())
+        const produtoEncontrado = produtos.find(p => p.nomeproduto.toLowerCase() === produtoNome.toLowerCase())
+        if (!produtoEncontrado) {
+            setMensagem("Produto não encontrado!")
+            return
+        }
+        setProdutoIdProduto(produtoEncontrado.idproduto.toString())
+        //Criar uma nova venda
         const novaVenda: VendaState = {
             idvenda: parseInt(idvenda),
             datavenda: datavenda,
             valorvenda: parseFloat(valorvenda),
             formapagamentovenda: formapagamentovenda,
-            funcionario_idfuncionario: parseInt (funcionario_idfuncionario),
-            produto_idproduto: parseInt(produto_idproduto)
+            funcionario_idfuncionario: funcionarioEncontrado.idfuncionario,
+            produto_idproduto: produtoEncontrado.idproduto
         }
         try {
             const resposta = await fetch("http://localhost:8000/venda", {
@@ -56,22 +101,18 @@ function Venda() {
                 },
                 body: JSON.stringify(novaVenda)
             })
-           
             if (resposta.status === 200) {
                 const dados = await resposta.json()
                 setVenda([...venda, dados])
+                setMensagem("")
             }
             if (resposta.status === 400) {
                 const erro = await resposta.json()
                 setMensagem(erro.mensagem)
-                //console.log(erro.mensagem)
             }
-            
-        }
-        catch (erro) {
+        } catch (erro) {
             setMensagem("Fetch não functiona")
         }
-
     }
     function trataIdVenda(event: React.ChangeEvent<HTMLInputElement>) {
         setIdVenda(event.target.value)
@@ -85,11 +126,11 @@ function Venda() {
     function trataFormaPagamentoVenda(event: React.ChangeEvent<HTMLInputElement>) {
         setFormaPagamentoVenda(event.target.value)
     }
-    function trataFuncionarioIdFuncionario(event: React.ChangeEvent<HTMLInputElement>) {
-        setFuncionarioIdFuncionario(event.target.value)
+    function trataFuncionarioNome(event: React.ChangeEvent<HTMLInputElement>) {
+        setFuncionarioNome(event.target.value)
     }
-    function trataProdutoIdProduto(event: React.ChangeEvent<HTMLInputElement>) {
-        setProdutoIdProduto(event.target.value)
+    function trataProdutoNome(event: React.ChangeEvent<HTMLInputElement>) {
+        setProdutoNome(event.target.value)
     }
     return (
         <>
@@ -99,7 +140,6 @@ function Venda() {
                         <p>{mensagem}</p>
                     </div>
                 }
-
                 <div className="container-listagem">
                     {venda.map(venda => {
                         return (
@@ -132,11 +172,21 @@ function Venda() {
                         <input type="number" name="data" id="data" onChange={trataDataVenda} placeholder="Data" />
                         <input type="number" name="valor" id="valor" onChange={trataValorVenda} placeholder="Valor" />
                         <input type="text" name="pagamento" id="pagamento" onChange={trataFormaPagamentoVenda} placeholder="Pagamento" />
-                        <input type="number" name="funcionario" id="funcionario" onChange={trataFuncionarioIdFuncionario} placeholder="Id Funcionário" />
-                        <input type="number" name="produto" id="produto" onChange={trataProdutoIdProduto} placeholder="Id Produto" />
+                        <input type="text" name="funcionarioNome" id="funcionarioNome" onChange={trataFuncionarioNome} placeholder="Nome do Funcionário" value={funcionarioNome} />
+                        <input type="text" name="produtoNome" id="produtoNome" onChange={trataProdutoNome} placeholder="Nome do Produto" value={produtoNome} />
                         <input type="submit" value="Cadastrar" />
                     </form>
-
+                    {/* Sugestão de nomes de funcionários e produtos */}
+                    {funcionarios.length > 0 && (
+                        <div style={{ marginTop: '10px', fontSize: '0.9em' }}>
+                            <strong>Funcionários cadastrados:</strong> {funcionarios.map(f => f.nomefuncionario).join(", ")}
+                        </div>
+                    )}
+                    {produtos.length > 0 && (
+                        <div style={{ marginTop: '10px', fontSize: '0.9em' }}>
+                            <strong>Produtos cadastrados:</strong> {produtos.map(p => p.nomeproduto).join(", ")}
+                        </div>
+                    )}
                 </div>
             </main>
             <footer></footer>
