@@ -1,122 +1,85 @@
-.funcionario-container {
-    background-color: white;
-    border-radius: 10px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-    border-left: 4px solid #2e7d32;
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 1.5rem;
-    align-items: center;
-}
-
-.funcionario-container:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-}
-
-.funcionario-avatar {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: #e8f5e9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    color: #2e7d32;
-}
-
-.funcionario-info {
-    display: flex;
-    flex-direction: column;
-}
-
-.funcionario-id {
-    font-size: 0.85rem;
-    color: #616161;
-    font-weight: 500;
-}
-
-.funcionario-nome {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #2e7d32;
-    margin: 0.25rem 0;
-}
-
-.funcionario-cargo {
-    background-color: #e8f5e9;
-    color: #1b5e20;
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    display: inline-block;
-    width: fit-content;
+/* Funcionario.css */
+.mensagem {
+    background-color: var(--light-color);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    text-align: center;
+    color: var(--primary-color);
 }
 
 .container-listagem {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
 }
 
-.container-cadastro {
+.funcionario-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
     background-color: white;
-    border-radius: 10px;
-    padding: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.funcionario-id, .funcionario-nome,
+.funcionario-funcao, .funcionario-cpf {
+    flex: 1;
 }
 
 .container-cadastro form {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-}
-
-.container-cadastro input,
-.container-cadastro select {
-    padding: 0.8rem 1rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    background-color: #fafafa;
-}
-
-.container-cadastro input:focus,
-.container-cadastro select:focus {
-    outline: none;
-    border-color: #2e7d32;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     background-color: white;
-    box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
+    padding: 1.5rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.container-cadastro input {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: "Lato", sans-serif;
 }
 
 .container-cadastro input[type="submit"] {
-    grid-column: 1 / -1;
-    background-color: #2e7d32;
+    background-color: var(--primary-color);
     color: white;
-    font-weight: 500;
     border: none;
     cursor: pointer;
-    transition: background-color 0.3s;
-    padding: 1rem;
+    transition: background-color 0.3s ease;
 }
 
 .container-cadastro input[type="submit"]:hover {
-    background-color: #1b5e20;
+    background-color: var(--secondary-color);
 }
 
-.mensagem {
-    padding: 1rem;
-    margin-bottom: 1.5rem;
-    border-radius: 6px;
-    text-align: center;
-    font-weight: 500;
-    background-color: #e8f5e9;
-    color: #1b5e20;
-    border: 1px solid #c8e6c9;
+button {
+    padding: 0.5rem 1rem;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: var(--secondary-color);
+}
+
+@media (max-width: 768px) {
+    .funcionario-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .container-cadastro form {
+        padding: 1rem;
+    }
 }

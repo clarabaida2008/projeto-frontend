@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* Root: Define variáveis CSS para cores usadas no tema do site.*/
 :root {
     --primary-color: #1b5e20;
     --secondary-color: #2e7d32;
@@ -7,19 +10,24 @@
     --gray-color: #616161;
 }
 
+/* Reset global de margens, preenchimentos e box-sizing para todos os elementos.*/
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Body: Define a fonte padrão, cor de fundo, cor do texto e espaçamento entre linhas para o corpo da página. */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
     background-color: #f5f7fa;
     color: var(--dark-color);
     line-height: 1.6;
 }
 
+/* Header: Estiliza o cabeçalho geral das páginas.*/
 header {
     background-color: var(--primary-color);
     color: white;
@@ -30,31 +38,36 @@ header {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Header Div: Estiliza o texto do logo ou nome do sistema no cabeçalho.*/
 header div {
     font-size: 1.8rem;
     font-weight: bold;
     color: white;
 }
 
+/* nav ul: Estiliza a lista de navegação, deixando os itens em linha e sem marcadores.*/
 nav ul {
     display: flex;
     list-style: none;
     gap: 1.5rem;
+    font-size: 1.1rem;
 }
 
+/* nav a: Estiliza os links de navegação, removendo sublinhado, ajustando cor, espaçamento e efeito de transição.*/
 nav a {
     color: white;
     text-decoration: none;
-    font-weight: 500;
     padding: 0.5rem 1rem;
     border-radius: 4px;
     transition: all 0.3s ease;
 }
 
+/* nav a:hover: Aplica efeito visual ao passar o mouse sobre os links de navegação.*/
 nav a:hover {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
+/* main: Define o layout principal do conteúdo, centralizando e limitando a largura máxima.*/
 main {
     flex: 1;
     padding: 2rem;
@@ -63,19 +76,20 @@ main {
     margin: 0 auto;
 }
 
+/* @media (max-width: 768px): Torna o layout responsivo para dispositivos móveis, ajustando o cabeçalho e navegação.*/
 @media (max-width: 768px) {
     header {
         flex-direction: column;
         gap: 1rem;
         padding: 1rem;
     }
-    
+
     nav ul {
         flex-direction: column;
         gap: 0.5rem;
         width: 100%;
     }
-    
+
     nav a {
         display: block;
         text-align: center;

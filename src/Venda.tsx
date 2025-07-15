@@ -25,8 +25,8 @@ function Venda() {
     const [formapagamentovenda, setFormaPagamentoVenda] = useState("")
     const [funcionarioNome, setFuncionarioNome] = useState("")
     const [produtoNome, setProdutoNome] = useState("")
-    const [funcionario_idfuncionario, setFuncionarioIdFuncionario]= useState("")
-    const [produto_idproduto, setProdutoIdProduto]= useState("")
+    const [funcionario_idfuncionario, setFuncionarioIdFuncionario] = useState("")
+    const [produto_idproduto, setProdutoIdProduto] = useState("")
     const [venda, setVenda] = useState<VendaState[]>([])
     const [funcionarios, setFuncionarios] = useState<FuncionarioState[]>([])
     const [produtos, setProdutos] = useState<ProdutoState[]>([])
@@ -54,7 +54,7 @@ function Venda() {
                     const dados = await resultado.json()
                     setFuncionarios(dados)
                 }
-            } catch (erro) {}
+            } catch (erro) { }
         }
         const buscaProdutos = async () => {
             try {
@@ -63,7 +63,7 @@ function Venda() {
                     const dados = await resultado.json()
                     setProdutos(dados)
                 }
-            } catch (erro) {}
+            } catch (erro) { }
         }
         buscaDados()
         buscaFuncionarios()
@@ -238,8 +238,8 @@ function Venda() {
                     {venda.map(venda => (
                         <div className="venda-container" key={venda.idvenda}>
                             {editandoId === venda.idvenda ? (
-                                <form className="form-edicao" onSubmit={salvarEdicao} style={{display: 'flex', gap: '8px', alignItems: 'center'}}>
-                                    <input type="number" value={editId} onChange={e => setEditId(e.target.value)} placeholder="Id" style={{width: '60px'}} />
+                                <form className="form-edicao" onSubmit={salvarEdicao} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                                    <input type="number" value={editId} onChange={e => setEditId(e.target.value)} placeholder="Id" style={{ width: '60px' }} />
                                     <input type="number" value={editData} onChange={e => setEditData(e.target.value)} placeholder="Data" />
                                     <input type="number" value={editValor} onChange={e => setEditValor(e.target.value)} placeholder="Valor" />
                                     <input type="text" value={editPagamento} onChange={e => setEditPagamento(e.target.value)} placeholder="Pagamento" />
@@ -276,7 +276,7 @@ function Venda() {
                 <div className="container-cadastro">
                     <form onSubmit={TrataCadastro}>
                         <input type="number" name="id" id="id" onChange={trataIdVenda} placeholder="Id" />
-                        <input type="number" name="data" id="data" onChange={trataDataVenda} placeholder="Data" />
+                        <input type="date" name="data" id="data" onChange={trataDataVenda} />
                         <input type="number" name="valor" id="valor" onChange={trataValorVenda} placeholder="Valor" />
                         <input type="text" name="pagamento" id="pagamento" onChange={trataFormaPagamentoVenda} placeholder="Pagamento" />
                         <select name="funcionarioNome" id="funcionarioNome" onChange={trataFuncionarioNome} value={funcionarioNome} required>
