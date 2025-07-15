@@ -77,6 +77,7 @@ function Funcionario() {
             setMensagem("⚠️FUNÇÃO NÃO PODE CONTER NÚMEROS")
             return false
         }
+        
 
         return true
     }
@@ -196,6 +197,12 @@ function Funcionario() {
         const contemNumero = /[0-9]/.test(editNome)
         if (contemNumero) {
             setMensagem("⚠️NOME NÃO PODE CONTER NÚMEROS")
+            return false
+        }
+
+        const contemNumero2 = /[0-9]/.test(editfUN)
+        if (contemNumero2) {
+            setMensagem("⚠️FUNÇÃO NÃO PODE CONTER NÚMEROS")
             return false
         }
 

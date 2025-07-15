@@ -1,14 +1,16 @@
-import './Venda.css';
+import './Venda.css'
 import { useEffect, useState } from "react"
 
 interface FuncionarioState {
     idfuncionario: number,
     nomefuncionario: string
 }
+
 interface ProdutoState {
     idproduto: number,
     nomeproduto: string
 }
+
 interface VendaState {
     idvenda: number,
     datavenda: string,
@@ -19,6 +21,7 @@ interface VendaState {
 }
 
 function Venda() {
+    // Estados para os campos do formulário de cadastro
     const [idvenda, setIdVenda] = useState("")
     const [datavenda, setDataVenda] = useState("")
     const [valorvenda, setValorVenda] = useState("")
@@ -27,10 +30,23 @@ function Venda() {
     const [produtoNome, setProdutoNome] = useState("")
     const [funcionario_idfuncionario, setFuncionarioIdFuncionario] = useState("")
     const [produto_idproduto, setProdutoIdProduto] = useState("")
+    const [mensagem, setMensagem] = useState("")
+
+    // Estados para listagem
     const [venda, setVenda] = useState<VendaState[]>([])
     const [funcionarios, setFuncionarios] = useState<FuncionarioState[]>([])
     const [produtos, setProdutos] = useState<ProdutoState[]>([])
-    const [mensagem, setMensagem] = useState("");
+
+    // Estado para controle de edição
+    const [editandoId, setEditandoId] = useState<number | null>(null)
+    const [editId, setEditId] = useState("")
+    const [editData, setEditData] = useState("")
+    const [editValor, setEditValor] = useState("")
+    const [editPagamento, setEditPagamento] = useState("")
+    const [editFuncionarioNome, setEditFuncionarioNome] = useState("")
+    const [editProdutoNome, setEditProdutoNome] = useState("")
+
+    // Carregar dados do backend
     useEffect(() => {
         const buscaDados = async () => {
             try {
@@ -38,15 +54,15 @@ function Venda() {
                 if (resultado.status === 200) {
                     const dados = await resultado.json()
                     setVenda(dados)
-                }
-                if (resultado.status === 400) {
+                } else if (resultado.status === 400) {
                     const erro = await resultado.json()
                     setMensagem(erro.mensagem)
                 }
             } catch (erro) {
-                setMensagem("Fetch não functiona")
+                setMensagem("⚠️ERRO AO CONECTAR COM O SERVIDOR")
             }
         }
+
         const buscaFuncionarios = async () => {
             try {
                 const resultado = await fetch("http://localhost:8000/funcionario")
@@ -54,8 +70,9 @@ function Venda() {
                     const dados = await resultado.json()
                     setFuncionarios(dados)
                 }
-            } catch (erro) { }
+            } catch {}
         }
+
         const buscaProdutos = async () => {
             try {
                 const resultado = await fetch("http://localhost:8000/produto")
@@ -63,28 +80,48 @@ function Venda() {
                     const dados = await resultado.json()
                     setProdutos(dados)
                 }
-            } catch (erro) { }
+            } catch {}
         }
+
         buscaDados()
         buscaFuncionarios()
         buscaProdutos()
     }, [])
+
+    // Validação de campos
+    function validarCampos() {
+        if (!idvenda || !datavenda || !valorvenda || !formapagamentovenda || !funcionarioNome || !produtoNome) {
+            setMensagem("⚠️TODOS OS CAMPOS DEVEM SER PREENCHIDOS")
+            return false
+        }
+        if (isNaN(Number(idvenda))) {
+            setMensagem("⚠️ID DEVE SER UM NÚMERO")
+            return false
+        }
+        if (isNaN(Number(valorvenda))) {
+            setMensagem("⚠️VALOR DEVE SER UM NÚMERO")
+            return false
+        }
+        return true
+    }
+
     async function TrataCadastro(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault();
-        // Buscar funcionário e produto pelos nomes
+        event.preventDefault()
+
+        if (!validarCampos()) return
+
         const funcionarioEncontrado = funcionarios.find(f => f.nomefuncionario.toLowerCase() === funcionarioNome.toLowerCase())
         if (!funcionarioEncontrado) {
-            setMensagem("Funcionário não encontrado!")
+            setMensagem("⚠️FUNCIONÁRIO NÃO ENCONTRADO")
             return
         }
-        setFuncionarioIdFuncionario(funcionarioEncontrado.idfuncionario.toString())
+
         const produtoEncontrado = produtos.find(p => p.nomeproduto.toLowerCase() === produtoNome.toLowerCase())
         if (!produtoEncontrado) {
-            setMensagem("Produto não encontrado!")
+            setMensagem("⚠️PRODUTO NÃO ENCONTRADO")
             return
         }
-        setProdutoIdProduto(produtoEncontrado.idproduto.toString())
-        //Criar uma nova venda
+
         const novaVenda: VendaState = {
             idvenda: parseInt(idvenda),
             datavenda: datavenda,
@@ -93,27 +130,33 @@ function Venda() {
             funcionario_idfuncionario: funcionarioEncontrado.idfuncionario,
             produto_idproduto: produtoEncontrado.idproduto
         }
+
         try {
             const resposta = await fetch("http://localhost:8000/venda", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(novaVenda)
             })
+
             if (resposta.status === 200) {
                 const dados = await resposta.json()
                 setVenda([...venda, dados])
-                setMensagem("")
-            }
-            if (resposta.status === 400) {
+                setMensagem("✅VENDA CADASTRADA COM SUCESSO!")
+                setIdVenda("")
+                setDataVenda("")
+                setValorVenda("")
+                setFormaPagamentoVenda("")
+                setFuncionarioNome("")
+                setProdutoNome("")
+            } else if (resposta.status === 400) {
                 const erro = await resposta.json()
                 setMensagem(erro.mensagem)
             }
         } catch (erro) {
-            setMensagem("Fetch não functiona")
+            setMensagem("⚠️ERRO AO CONECTAR COM O SERVIDOR")
         }
     }
+
     async function excluirVenda(id: number) {
         try {
             const resposta = await fetch(`http://localhost:8000/venda/${id}`, {
@@ -122,125 +165,96 @@ function Venda() {
             const dados = await resposta.json()
             if (resposta.status === 200) {
                 setVenda(venda.filter(v => v.idvenda !== id))
-                setMensagem(dados.mensagem)
+                setMensagem(dados.mensagem || "✅VENDA EXCLUÍDA COM SUCESSO!")
             } else {
-                setMensagem(dados.mensagem)
+                setMensagem(dados.mensagem || "⚠️ERRO AO EXCLUIR")
             }
         } catch (erro) {
-            setMensagem("Erro ao tentar excluir a venda.")
+            setMensagem("⚠️ERRO AO EXCLUIR")
         }
     }
 
-    // Estado para edição
-    const [editandoId, setEditandoId] = useState<number | null>(null);
-    const [editId, setEditId] = useState("");
-    const [editData, setEditData] = useState("");
-    const [editValor, setEditValor] = useState("");
-    const [editPagamento, setEditPagamento] = useState("");
-    const [editFuncionarioNome, setEditFuncionarioNome] = useState("");
-    const [editProdutoNome, setEditProdutoNome] = useState("");
-
     function iniciarEdicao(v: VendaState) {
-        setEditandoId(v.idvenda);
-        setEditId(v.idvenda.toString());
-        setEditData(v.datavenda);
-        setEditValor(v.valorvenda.toString());
-        setEditPagamento(v.formapagamentovenda);
-        const funcionario = funcionarios.find(f => f.idfuncionario === v.funcionario_idfuncionario);
-        setEditFuncionarioNome(funcionario ? funcionario.nomefuncionario : "");
-        const produto = produtos.find(p => p.idproduto === v.produto_idproduto);
-        setEditProdutoNome(produto ? produto.nomeproduto : "");
-        setMensagem("");
+        setEditandoId(v.idvenda)
+        setEditId(v.idvenda.toString())
+        setEditData(v.datavenda)
+        setEditValor(v.valorvenda.toString())
+        setEditPagamento(v.formapagamentovenda)
+        const funcionario = funcionarios.find(f => f.idfuncionario === v.funcionario_idfuncionario)
+        const produto = produtos.find(p => p.idproduto === v.produto_idproduto)
+        setEditFuncionarioNome(funcionario ? funcionario.nomefuncionario : "")
+        setEditProdutoNome(produto ? produto.nomeproduto : "")
+        setMensagem("")
     }
 
     function cancelarEdicao() {
-        setEditandoId(null);
-        setEditId("");
-        setEditData("");
-        setEditValor("");
-        setEditPagamento("");
-        setEditFuncionarioNome("");
-        setEditProdutoNome("");
-        setMensagem("");
+        setEditandoId(null)
+        setEditId("")
+        setEditData("")
+        setEditValor("")
+        setEditPagamento("")
+        setEditFuncionarioNome("")
+        setEditProdutoNome("")
+        setMensagem("")
     }
 
     async function salvarEdicao(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault();
+        event.preventDefault()
+
         if (!editId || !editData || !editValor || !editPagamento || !editFuncionarioNome || !editProdutoNome) {
-            setMensagem('Todos os campos devem ser preenchidos para atualizar.');
-            return;
+            setMensagem("⚠️TODOS OS CAMPOS DEVEM SER PREENCHIDOS")
+            return
         }
-        const funcionarioEncontrado = funcionarios.find(f => f.nomefuncionario.toLowerCase() === editFuncionarioNome.toLowerCase());
-        if (!funcionarioEncontrado) {
-            setMensagem("Funcionário não encontrado!");
-            return;
+
+        const funcionario = funcionarios.find(f => f.nomefuncionario.toLowerCase() === editFuncionarioNome.toLowerCase())
+        const produto = produtos.find(p => p.nomeproduto.toLowerCase() === editProdutoNome.toLowerCase())
+
+        if (!funcionario || !produto) {
+            setMensagem("⚠️FUNCIONÁRIO OU PRODUTO INVÁLIDO")
+            return
         }
-        const produtoEncontrado = produtos.find(p => p.nomeproduto.toLowerCase() === editProdutoNome.toLowerCase());
-        if (!produtoEncontrado) {
-            setMensagem("Produto não encontrado!");
-            return;
-        }
+
         const vendaAtualizada: VendaState = {
             idvenda: parseInt(editId),
             datavenda: editData,
             valorvenda: parseFloat(editValor),
             formapagamentovenda: editPagamento,
-            funcionario_idfuncionario: funcionarioEncontrado.idfuncionario,
-            produto_idproduto: produtoEncontrado.idproduto
-        };
+            funcionario_idfuncionario: funcionario.idfuncionario,
+            produto_idproduto: produto.idproduto
+        }
+
         try {
             const resposta = await fetch(`http://localhost:8000/venda/${editandoId}`, {
                 method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(vendaAtualizada)
-            });
-            const dados = await resposta.json();
+            })
+
+            const dados = await resposta.json()
             if (resposta.status === 200) {
-                setVenda(venda.map(v => v.idvenda === editandoId ? vendaAtualizada : v));
-                setMensagem(dados.mensagem || 'Venda atualizada com sucesso!');
-                cancelarEdicao();
+                setVenda(venda.map(v => v.idvenda === editandoId ? vendaAtualizada : v))
+                setMensagem(dados.mensagem || "✅VENDA ATUALIZADA COM SUCESSO!")
+                cancelarEdicao()
             } else {
-                setMensagem(dados.mensagem || 'Erro ao atualizar venda.');
+                setMensagem(dados.mensagem || "⚠️ERRO AO ATUALIZAR")
             }
         } catch (erro) {
-            setMensagem('Erro ao tentar atualizar a venda.');
+            setMensagem("⚠️ERRO AO ATUALIZAR")
         }
     }
-    function trataIdVenda(event: React.ChangeEvent<HTMLInputElement>) {
-        setIdVenda(event.target.value)
-    }
-    function trataDataVenda(event: React.ChangeEvent<HTMLInputElement>) {
-        setDataVenda(event.target.value)
-    }
-    function trataValorVenda(event: React.ChangeEvent<HTMLInputElement>) {
-        setValorVenda(event.target.value)
-    }
-    function trataFormaPagamentoVenda(event: React.ChangeEvent<HTMLInputElement>) {
-        setFormaPagamentoVenda(event.target.value)
-    }
-    function trataFuncionarioNome(event: React.ChangeEvent<HTMLSelectElement>) {
-        setFuncionarioNome(event.target.value)
-    }
-    function trataProdutoNome(event: React.ChangeEvent<HTMLSelectElement>) {
-        setProdutoNome(event.target.value)
-    }
+
     return (
         <>
             <main>
-                {mensagem &&
-                    <div className="mensagem">
-                        <p>{mensagem}</p>
-                    </div>
-                }
+                {mensagem && <div className="mensagem"><p>{mensagem}</p></div>}
+
                 <div className="container-listagem">
-                    {venda.map(venda => (
-                        <div className="venda-container" key={venda.idvenda}>
-                            {editandoId === venda.idvenda ? (
-                                <form className="form-edicao" onSubmit={salvarEdicao} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    {venda.map(v => (
+                        <div className="venda-container" key={v.idvenda}>
+                            {editandoId === v.idvenda ? (
+                                <form className="form-edicao" onSubmit={salvarEdicao} style={{ display: 'flex', gap: '8px' }}>
                                     <input type="number" value={editId} onChange={e => setEditId(e.target.value)} placeholder="Id" style={{ width: '60px' }} />
-                                    <input type="number" value={editData} onChange={e => setEditData(e.target.value)} placeholder="Data" />
+                                    <input type="date" value={editData} onChange={e => setEditData(e.target.value)} />
                                     <input type="number" value={editValor} onChange={e => setEditValor(e.target.value)} placeholder="Valor" />
                                     <input type="text" value={editPagamento} onChange={e => setEditPagamento(e.target.value)} placeholder="Pagamento" />
                                     <select value={editFuncionarioNome} onChange={e => setEditFuncionarioNome(e.target.value)} required>
@@ -260,32 +274,33 @@ function Venda() {
                                 </form>
                             ) : (
                                 <>
-                                    <div className="venda-id">{venda.idvenda}</div>
-                                    <div className="venda-data">{venda.datavenda}</div>
-                                    <div className="venda-valor">{venda.valorvenda}</div>
-                                    <div className="venda-pagamento">{venda.formapagamentovenda}</div>
-                                    <div className="venda-funcionario">{venda.funcionario_idfuncionario}</div>
-                                    <div className="venda-produto">{venda.produto_idproduto}</div>
-                                    <button onClick={() => iniciarEdicao(venda)}>Editar</button>
-                                    <button onClick={() => excluirVenda(venda.idvenda)}>Excluir</button>
+                                    <div className="venda-id">{v.idvenda}</div>
+                                    <div className="venda-data">{v.datavenda}</div>
+                                    <div className="venda-valor">{v.valorvenda}</div>
+                                    <div className="venda-pagamento">{v.formapagamentovenda}</div>
+                                    <div className="venda-funcionario">{v.funcionario_idfuncionario}</div>
+                                    <div className="venda-produto">{v.produto_idproduto}</div>
+                                    <button onClick={() => iniciarEdicao(v)}>Editar</button>
+                                    <button onClick={() => excluirVenda(v.idvenda)}>Excluir</button>
                                 </>
                             )}
                         </div>
                     ))}
                 </div>
+
                 <div className="container-cadastro">
                     <form onSubmit={TrataCadastro}>
-                        <input type="number" name="id" id="id" onChange={trataIdVenda} placeholder="Id" />
-                        <input type="date" name="data" id="data" onChange={trataDataVenda} />
-                        <input type="number" name="valor" id="valor" onChange={trataValorVenda} placeholder="Valor" />
-                        <input type="text" name="pagamento" id="pagamento" onChange={trataFormaPagamentoVenda} placeholder="Pagamento" />
-                        <select name="funcionarioNome" id="funcionarioNome" onChange={trataFuncionarioNome} value={funcionarioNome} required>
+                        <input type="number" onChange={e => setIdVenda(e.target.value)} placeholder="Id" value={idvenda} />
+                        <input type="date" onChange={e => setDataVenda(e.target.value)} value={datavenda} />
+                        <input type="number" onChange={e => setValorVenda(e.target.value)} placeholder="Valor" value={valorvenda} />
+                        <input type="text" onChange={e => setFormaPagamentoVenda(e.target.value)} placeholder="Forma de Pagamento" value={formapagamentovenda} />
+                        <select onChange={e => setFuncionarioNome(e.target.value)} value={funcionarioNome} required>
                             <option value="">Selecione o Funcionário</option>
                             {funcionarios.map(f => (
                                 <option key={f.idfuncionario} value={f.nomefuncionario}>{f.nomefuncionario}</option>
                             ))}
                         </select>
-                        <select name="produtoNome" id="produtoNome" onChange={trataProdutoNome} value={produtoNome} required>
+                        <select onChange={e => setProdutoNome(e.target.value)} value={produtoNome} required>
                             <option value="">Selecione o Produto</option>
                             {produtos.map(p => (
                                 <option key={p.idproduto} value={p.nomeproduto}>{p.nomeproduto}</option>
