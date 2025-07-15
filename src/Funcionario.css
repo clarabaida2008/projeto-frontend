@@ -1,5 +1,15 @@
 /* Funcionario.css */
-.mensagem {
+.mensagem-erro {
+    background-color: var(--wrong-color1);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    text-align: center;
+    color: var(--wrong-color2);
+    border: 1px solid var(--wrong-color2);
+}
+
+.mensagem-sucesso {
     background-color: var(--light-color);
     padding: 1rem;
     margin-bottom: 1rem;
@@ -82,4 +92,33 @@ button:hover {
     .container-cadastro form {
         padding: 1rem;
     }
+}
+/* Adicione estas regras ao Funcionario.css */
+.form-edicao {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.form-edicao input {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    flex: 1;
+    min-width: 100px;
+}
+
+.form-edicao button {
+    padding: 0.5rem 1rem;
+    margin: 0;
+}
+
+.btn-salvar {
+    background-color: var(--primary-color);
+}
+
+.btn-cancelar {
+    background-color: var(--gray-color);
 }

@@ -1,4 +1,4 @@
-/* Fornecedor.css */
+/*ESTILIZAÇÃO DAS MENSAGENS DE ERRO/SUCESSO*/
 .mensagem {
     background-color: var(--light-color);
     padding: 1rem;
@@ -7,6 +7,7 @@
     text-align: center;
     color: var(--primary-color);
 }
+
 
 .container-listagem {
     display: flex;

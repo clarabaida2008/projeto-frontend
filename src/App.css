@@ -8,6 +8,8 @@
     --light-color: #e8f5e9;
     --dark-color: #333;
     --gray-color: #616161;
+    --wrong-color1: #f8d7da;
+    --wrong-color2: #721c24;
 }
 
 /* Reset global de margens, preenchimentos e box-sizing para todos os elementos.*/
