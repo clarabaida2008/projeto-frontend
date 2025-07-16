@@ -1,12 +1,14 @@
 import './App.css';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 
+// Importando os componentes das páginas pelo link no projeto
 import Home from './Home';
 import Fornecedor from './Fornecedor';
 import Funcionario from './Funcionario';
 import Produto from './Produto';
 import Venda from './Venda';
 
+// Componente principal da aplicação: cabeçalho com links de navegação e rotas para as páginas
 export default function App() {
   return (
     <BrowserRouter>

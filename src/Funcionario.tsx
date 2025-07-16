@@ -200,7 +200,7 @@ function Funcionario() {
             return false
         }
 
-        const contemNumero2 = /[0-9]/.test(editfUN)
+        const contemNumero2 = /[0-9]/.test(editFuncao)
         if (contemNumero2) {
             setMensagem("⚠️FUNÇÃO NÃO PODE CONTER NÚMEROS")
             return false
