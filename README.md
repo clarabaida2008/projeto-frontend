@@ -1,54 +1,78 @@
-# React + TypeScript + Vite
+Trabalho Final Frameworks e Banco de Dados
+Grupo: Clara Baida, Eli Jorge, Lívia Capilé e Letícia de Jesus
+Tema: Mercadinho
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Visão Geral
+	O sistema Mercadinho é uma aplicação web de gerenciamento para um pequeno mercado, seus usuários são unicamente os funcionários do mercado que podem cadastrar, editar, excluir e atualizar produtos, funcionários, fornecedores e vendas cadastrados no sistema, além de visualizar um relatório geral de tudo.
 
-Currently, two official plugins are available:
+Tecnologias Utilizadas
+Frontend: React com TypeScript
+Estilização: CSS
+Roteamento: React Router
+Tipagem: TypeScript interfaces
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Componentes Principais
+App.tsx: Componente raiz que configura o roteamento da aplicação em forma de cabeçalho com o React Router;
+App.css: Estilização do cabeçalho de navegação e do css base de todo o projeto, como cores e fonte;
+Home.tsx: Página inicial com relatório de produtos e fornecedores;
+Home.css: Estilização da página inicial;
+Fornecedor.tsx: CRUD de fornecedores com fetch para ligar ao back;
+Funcionario.tsx: CRUD de funcionários com fetch para ligar ao back;
+Produto.tsx: CRUD de produtos com fetch para ligar ao back;
+Vendas.tsx: CRUD de vendas com fetch para ligar ao back;
+Fornecedor/Funcionario/Produto/Vendas.css: Estilização dos CRUDs;
+Index.ts: Conexão do frontend como backend e o banco de dados, ajuda a cadastrar, deletar e editar os dados no banco.
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Funcionalidades
+Navegação
+Barra de navegação superior com links para todas as seções
+Layout responsivo que se adapta a dispositivos móveis
+Fornecedores
+Cadastro de novos fornecedores (ID, Nome, CNPJ, Cidade)
+Listagem de fornecedores cadastrados
+Edição e exclusão de fornecedores
+Validação de campos (tipos de dados, campos obrigatórios)
+Funcionários
+Cadastro de novos funcionários (ID, Nome, Função, CPF)
+Listagem de funcionários cadastrados
+Edição e exclusão de funcionários
+Validação de campos (tipos de dados, campos obrigatórios)
+Produtos
+Cadastro de novos produtos (ID, Nome, Preço, Categoria, Fornecedor)
+Listagem de produtos cadastrados
+Edição e exclusão de produtos
+Validação de campos (tipos de dados, campos obrigatórios)
+Relacionamento com fornecedores através de dropdown
+Home
+Exibe um relatório consolidado de produtos e seus fornecedores
+Mostra informações como preço, CNPJ do fornecedor e telefone
+Estilização
+Design limpo e moderno com paleta de cores verde
+Layout responsivo usando flexbox
+Componentes estilizados individualmente em arquivos CSS separados
+Mensagens de erro/sucesso com cores diferenciadas
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Fluxo de Dados
+Todas as operações CRUD são feitas através de chamadas a uma API REST local (http://localhost:8000)
+Os dados são armazenados em estado local usando o hook useState
+Efeitos colaterais são gerenciados com useEffect
+Validações
+Todos os formulários possuem validação de campos obrigatórios
+Verificação de tipos de dados (números onde necessário)
+Validação de formatos (nomes não podem conter números)
+Mensagens de erro claras para o usuário
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Como Executar
+Certifique-se que o backend está rodando em http://localhost:8000
+Instale as dependências com npm install
+Ligue o Laragon
+Instale o banco de dados no seu computador pelo arquivo:
+Dump20250715 (1)
+Inicie a aplicação com npm run dev
+Abra o link disponibilizado no terminal do frontend
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+
+
+
